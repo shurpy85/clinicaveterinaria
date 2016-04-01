@@ -86,6 +86,10 @@ public class ClienteVo {
     public void setEstado(boolean estado) {
         this.estado = estado;
     }
+
+    public void setCliente(int aInt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
     
