@@ -88,6 +88,10 @@ public class HistoriaVo {
     public void setIdMascota(int idMascota) {
         this.idMascota = idMascota;
     }
+
+    public void setHistoria(int aInt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
     

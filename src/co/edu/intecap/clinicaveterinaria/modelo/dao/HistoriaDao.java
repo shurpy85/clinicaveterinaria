@@ -6,7 +6,7 @@
 package co.edu.intecap.clinicaveterinaria.modelo.dao;
 
 import co.edu.intecap.clinicaveterinaria.modelo.conexion.Conexion;
-import co.edu.intecap.clinicaveterinaria.modelo.vo.ClienteVo;
+import co.edu.intecap.clinicaveterinaria.modelo.vo.HistoriaVo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -17,23 +17,23 @@ import java.util.List;
  *
  * @author capacitaciones
  */
-public class ClienteDao extends Conexion implements GenericoDao<ClienteVo> {
+public class HistoriaDao extends Conexion implements GenericoDao<HistoriaVo> {
 
     @Override
-    public void insertar(ClienteVo object) {
+    public void insertar(HistoriaVo object) {
         PreparedStatement sentencia;
         try {
             conectar();
-            String sql = "insert into cliente( nombre, correo, telefono,estado) values (?,?,?,?)";
+            String sql = "insert into historia( fecha_apertura, fecha_cierre,estado,id_mascota) values (?,?,?,?)";
             sentencia = cnn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            sentencia.setString(1, object.getNombre());
-            sentencia.setString(2, object.getCorreo());
-            sentencia.setString(3, object.getTelefono());
-            sentencia.setBoolean(4, object.isEstado());
+            sentencia.setDate(1, object.getFechaApertura());
+            sentencia.setDate(2, object.getFechaCierre());
+            sentencia.setBoolean(3, object.isEstado());
+            sentencia.setInt(4, object.getIdMascota());
             sentencia.executeUpdate();
             ResultSet rs = sentencia.getGeneratedKeys();
             if (rs.next()) {
-                object.setCliente(rs.getInt(1));
+                object.setHistoria(rs.getInt(1));
 
             }
 
@@ -45,19 +45,20 @@ public class ClienteDao extends Conexion implements GenericoDao<ClienteVo> {
     }
 
     @Override
-    public void editar(ClienteVo object) {
+    public void editar(HistoriaVo object) {
         PreparedStatement sentencia;
         try {
             conectar();
-            String sql = "update cliente set id_cliente=?, nombre=?, correo=?, telefono=?,estado=? where id_cliente=?";
+            String sql = "update historia set id_historia=?, fecha_apertura=?, fecha_cierre=?, estado=?, id_mascota=? where id_historia=?";
             sentencia = cnn.prepareStatement(sql);
-            sentencia.setInt(1, object.getIdCliente());
-            sentencia.setString(2, object.getNombre());
-            sentencia.setString(3, object.getCorreo());
-            sentencia.setString(4, object.getTelefono());
-            sentencia.setBoolean(5, object.isEstado());
-            sentencia.setInt(6, object.getIdCliente());
+            sentencia.setInt(1, object.getIdHistoria());
+            sentencia.setDate(2, object.getFechaApertura());
+            sentencia.setDate(3, object.getFechaCierre());
+            sentencia.setBoolean(4, object.isEstado());
+            sentencia.setInt(5, object.getIdMascota());
+            sentencia.setInt(6, object.getIdHistoria());
             sentencia.executeUpdate();
+
         } catch (Exception e) {
             e.printStackTrace(System.err);
         } finally {
@@ -66,22 +67,22 @@ public class ClienteDao extends Conexion implements GenericoDao<ClienteVo> {
     }
 
     @Override
-    public List<ClienteVo> consultar() {
+    public List<HistoriaVo> consultar() {
         PreparedStatement sentencia;
-        List<ClienteVo> lista = new ArrayList<>();
+        List<HistoriaVo> lista = new ArrayList<>();
         try {
             conectar();
-            String sql = "select from * cliente";
+            String sql = "select from * historia";
             sentencia = cnn.prepareStatement(sql);
             ResultSet rs = sentencia.executeQuery();
             while (rs.next()) {
-                ClienteVo cliente = new ClienteVo();
-                cliente.setIdCliente(rs.getInt("id_cliente"));
-                cliente.setNombre(rs.getString("nombre"));
-                cliente.setCorreo(rs.getString("correo"));
-                cliente.setTelefono(rs.getString("telefono"));
-                cliente.setEstado(rs.getBoolean("estado"));
-                lista.add(cliente);
+                HistoriaVo historia = new HistoriaVo();
+                historia.setIdHistoria(rs.getInt("id_historia"));
+                historia.setFechaApertura(rs.getDate("fecha_apertura"));
+                historia.setFechaCierre(rs.getDate("fecha_cierre"));
+                historia.setEstado(rs.getBoolean("estado"));
+                historia.setIdMascota(rs.getInt("id_mascota"));
+                lista.add(historia);
 
             }
 
@@ -94,22 +95,24 @@ public class ClienteDao extends Conexion implements GenericoDao<ClienteVo> {
     }
 
     @Override
-    public ClienteVo consultar(int id) {
+    public HistoriaVo consultar(int id) {
+
         PreparedStatement sentencia;
-        ClienteVo obj = new ClienteVo();
+        HistoriaVo obj = new HistoriaVo();
         try {
             conectar();
-            String sql = "select from * cliente where id_cliente =?";
+            String sql = "select from * historia where id_historia =?";
             sentencia = cnn.prepareStatement(sql);
             sentencia.setInt(1, id);
             ResultSet rs = sentencia.executeQuery();
             if (rs.next()) {
-                obj.setIdCliente(rs.getInt("id_cliente"));
-                obj.setNombre(rs.getString("nombre"));
-                obj.setCorreo(rs.getString("correo"));
-                obj.setTelefono(rs.getString("telefono"));
+               
+                obj.setIdHistoria(rs.getInt("id_historia"));
+                obj.setFechaApertura(rs.getDate("fecha_apertura"));
+                obj.setFechaCierre(rs.getDate("fecha_cierre"));
                 obj.setEstado(rs.getBoolean("estado"));
-              
+                obj.setIdMascota(rs.getInt("id_mascota"));
+               
             }
 
         } catch (Exception e) {
