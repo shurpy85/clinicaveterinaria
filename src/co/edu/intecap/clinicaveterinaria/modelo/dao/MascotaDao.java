@@ -55,7 +55,7 @@ public class MascotaDao extends Conexion implements GenericoDao<MascotaVo> {
         try {
             conectar();
             //crear string del sql de la actualizacion 
-            String sql = "update mascota set id_mascota=?, nombre=?, edad=?, estad=?, id_tipo_mascota =?, id_cliente=? where id_mascota=? ";
+            String sql = "update mascota set id_mascota=?, nombre=?, edad=?, estado=?, id_tipo_mascota =?, id_cliente=? where id_mascota=? ";
             sentencia = cnn.prepareStatement(sql);
             sentencia.setInt(1, object.getIdMascota());
             sentencia.setString(2, object.getNombre());
