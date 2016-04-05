@@ -9,7 +9,7 @@ import co.edu.intecap.clinicaveterinaria.modelo.dao.TipoMascotaDao;
 import co.edu.intecap.clinicaveterinaria.modelo.vo.TipoMascotaVo;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,10 +18,10 @@ import javax.swing.JOptionPane;
  */
 public class TipoMascotaDelegado {
 
-    private final JFrame contenedor;
+    private final JPanel contenedor;
     private final TipoMascotaDao tipoMascotaDao;
 
-    public TipoMascotaDelegado(JFrame contenedor) {
+    public TipoMascotaDelegado(JPanel contenedor) {
         this.contenedor = contenedor;
         this.tipoMascotaDao = new TipoMascotaDao();
     }

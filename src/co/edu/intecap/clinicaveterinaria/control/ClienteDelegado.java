@@ -9,7 +9,7 @@ import co.edu.intecap.clinicaveterinaria.modelo.dao.ClienteDao;
 import co.edu.intecap.clinicaveterinaria.modelo.vo.ClienteVo;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,10 +18,10 @@ import javax.swing.JOptionPane;
  */
 public class ClienteDelegado {
 
-    private final JFrame contenedor;
+    private final JPanel contenedor;
     private final ClienteDao clienteDao;
 
-    public ClienteDelegado(JFrame contenedor) {
+    public ClienteDelegado(JPanel contenedor) {
         this.contenedor = contenedor;
         this.clienteDao = new ClienteDao();
 

@@ -5,17 +5,58 @@
  */
 package co.edu.intecap.clinicaveterinaria.vista.paneles;
 
+import co.edu.intecap.clinicaveterinaria.control.TipoMascotaDelegado;
+import co.edu.intecap.clinicaveterinaria.modelo.vo.TipoMascotaVo;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author capacitaciones
  */
 public class TipoMascotaPanel extends javax.swing.JPanel {
 
+    private DefaultTableModel modelo;
+
     /**
      * Creates new form TipoMascotaPanel
      */
     public TipoMascotaPanel() {
         initComponents();
+        confirgurarTabla();
+        llenarTabla(new TipoMascotaDelegado(this).consultarTipoMascota(),modelo);
+    }
+
+    //metodo para obtener valores del GUI y resgistar un nuevo tipo mascota
+    private void registarTipoMascota() {
+        TipoMascotaVo tipoMascotaVo = new TipoMascotaVo();
+        //asiganar nombre del tipo de mascota
+        tipoMascotaVo.setNombre(txtNombre.getText());
+        tipoMascotaVo.setEstado(cbxEstado.isSelected());
+        new TipoMascotaDelegado(this).insertarTipoMascota(tipoMascotaVo);
+        //mnesaje de confirmacion de registro 
+        JOptionPane.showMessageDialog(this, "Tipo de mascota Registrado", "Registro de datos", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void confirgurarTabla() {
+        modelo = new DefaultTableModel();
+        modelo.addColumn("Id Mascota");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Estado");
+        tblTipoMascota.setModel(modelo);
+    }
+
+    private void llenarTabla(List<TipoMascotaVo> listaTipoMascota, DefaultTableModel modelo) {
+        for (TipoMascotaVo tipoMascotaVo : listaTipoMascota) {
+            Object [] fila = new Object[3];
+            fila[0]= tipoMascotaVo.getIdTipoMascota();
+            fila[1]= tipoMascotaVo.getNombre();
+            fila[2]= tipoMascotaVo.isEstado();
+            modelo.addRow(fila);
+            
+        }
+        tblTipoMascota.updateUI();
     }
 
     /**
@@ -29,14 +70,38 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jTextField1 = new javax.swing.JTextField();
+        cbxEstado = new javax.swing.JCheckBox();
+        txtNombre = new javax.swing.JTextField();
+        btnGuardar = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblTipoMascota = new javax.swing.JTable();
 
         jLabel1.setText("Nombre:");
 
         jLabel2.setText("Estado:");
 
-        jCheckBox1.setText("Activo");
+        cbxEstado.setText("Activo");
+
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        tblTipoMascota.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblTipoMascota);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -45,36 +110,56 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jCheckBox1)))
-                .addContainerGap(56, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38)
+                                .addComponent(btnGuardar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbxEstado)))
+                        .addGap(0, 122, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGuardar))
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jCheckBox1))
-                .addContainerGap(81, Short.MAX_VALUE))
+                    .addComponent(cbxEstado))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        this.registarTipoMascota();
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JCheckBox cbxEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable tblTipoMascota;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

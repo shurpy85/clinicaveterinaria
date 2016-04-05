@@ -9,7 +9,7 @@ import co.edu.intecap.clinicaveterinaria.modelo.dao.HistoriaDao;
 import co.edu.intecap.clinicaveterinaria.modelo.vo.HistoriaVo;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,10 +18,10 @@ import javax.swing.JOptionPane;
  */
 public class HistoriaDelegado {
 
-    private final JFrame contenedor;
+    private final JPanel contenedor;
     private final HistoriaDao historiaDao;
 
-    public HistoriaDelegado(JFrame contenedor) {
+    public HistoriaDelegado(JPanel contenedor) {
         this.contenedor = contenedor;
         this.historiaDao = new HistoriaDao();
 
