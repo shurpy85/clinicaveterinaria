@@ -71,7 +71,7 @@ public class ClienteDao extends Conexion implements GenericoDao<ClienteVo> {
         List<ClienteVo> lista = new ArrayList<>();
         try {
             conectar();
-            String sql = "select from * cliente";
+            String sql = "select * from  cliente";
             sentencia = cnn.prepareStatement(sql);
             ResultSet rs = sentencia.executeQuery();
             while (rs.next()) {

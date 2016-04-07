@@ -45,7 +45,7 @@ public class ClienteDelegado {
 
         }
     }
-     public List<ClienteVo> consultarCliente() {
+     public List<ClienteVo> consultarClientes() {
         List<ClienteVo> listaCliente;
         try {
             listaCliente = this.clienteDao.consultar();
@@ -57,7 +57,7 @@ public class ClienteDelegado {
         return listaCliente;
     }
      
-     public ClienteVo consultarClienteVo(int id) {
+     public ClienteVo consultarCliente(int id) {
         ClienteVo clienteVo;
         try {
                 clienteVo = this.clienteDao.consultar(id);

@@ -5,6 +5,7 @@
  */
 package co.edu.intecap.clinicaveterinaria.vista;
 
+import co.edu.intecap.clinicaveterinaria.vista.paneles.MascotaPanel;
 import co.edu.intecap.clinicaveterinaria.vista.paneles.TipoMascotaPanel;
 
 /**
@@ -22,6 +23,7 @@ public class Ventana extends javax.swing.JFrame {
     }
     private void agregarPestana(){
         tabVentana.add("tipo Mascota", new TipoMascotaPanel());
+        tabVentana.add("Mascota", new MascotaPanel());
     }
     
     /**

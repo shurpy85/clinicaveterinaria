@@ -37,12 +37,23 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
         //asiganar nombre del tipo de mascota
         tipoMascotaVo.setNombre(txtNombre.getText());
         tipoMascotaVo.setEstado(cbxEstado.isSelected());
-        new TipoMascotaDelegado(this).insertarTipoMascota(tipoMascotaVo);
+
+        //Validad si el id de la constante el mayor a (0)
+        if (tipoMascotaVo.getIdTipoMascota() < 1) {
+            //se crea un nuevo registro de tipoMascota
+            new TipoMascotaDelegado(this).insertarTipoMascota(tipoMascotaVo);
+        } else {
+            new TipoMascotaDelegado(this).editarTipoMascota(tipoMascotaVo);
+        }
+        {
+        }
+
         //mnesaje de confirmacion de registro 
         JOptionPane.showMessageDialog(this, "Tipo de mascota Registrado", "Registro de datos", JOptionPane.INFORMATION_MESSAGE);
         refrescarTabla();
         limpiarCampos();
-        
+        limpiarConstante();
+
     }
 
     /**
@@ -90,7 +101,18 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
         txtNombre.setText("");
         cbxEstado.setSelected(false);
     }
-
+    /**
+     * Reinicia los valores de la constante que se usa para insertar o actualizar 
+     * un registro de la tabla tipo_mascota.
+     */
+    private void limpiarConstante(){
+        //limpiar el id de tipo de mascota 
+        tipoMascotaVo.setIdTipoMascota(0);
+        //Limpiar el nombre de la masacota 
+        tipoMascotaVo.setNombre("");
+        //limpiar el estado del tipoMascota 
+        tipoMascotaVo.setEstado(false);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -182,13 +204,31 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         this.registarTipoMascota();
     }//GEN-LAST:event_btnGuardarActionPerformed
+    /**
+     * Escuchador de enventos para la seleccion de filas ennuna tabla, permite
+     * obterne el Id de un registro de la tabla con datos de la base de datos.
+     * Con el fin de realizar el trabajo de edicion de un registro para ello se
+     * usa un objeto que represente la tabla de la base de datos (Vo) para luego
+     * enviar dichos datos como parte de los parametros de la actualizacion
+     */
     ListSelectionListener tableListener = new ListSelectionListener() {
 
         @Override
         public void valueChanged(ListSelectionEvent e) {
+            //Validar si se ha seleccionado una fila de la tabla
             if (tblTipoMascota.getSelectedRow() > -1) {
                 //se obtiene el id de la fila seleccionada en la tabla 
-                int id =(int) tblTipoMascota.getValueAt(tblTipoMascota.getSelectedRow(), 0);
+                //Int Id-> variable que guarda el id_tipo_mascota de la fila seleccionada.
+
+                // (int) -> cateo el objeto que se obtiene al seleccionar una fila de la tabla de la
+                // interfaz grafica de ususario " se castea a un dato ded tipo int.
+                //tblTipoMascota metodo que permite obtener el dato de una celda de la tabla segun los parametros
+                //"(fila, columna)" este metodoo retorna un objecto de la clase object.
+                //tblTipoMascota.getSelectdRow -> metodo que retorno el numero de la fila sobre la cual 
+                //se ha realizado una seleccion con el mouse.
+                //0-> representa el indice de la columna seleccionada, siempre es 0 porque se toma 
+                //como referencia la primera columnna de la tabla.
+                int id = (int) tblTipoMascota.getValueAt(tblTipoMascota.getSelectedRow(), 0);
                 //consultar en la base de datos por ese id seleccionado y guardar el 
                 //resultado de la consulta enun nuevo object de TipoMascotaVo
                 TipoMascotaVo tMvo = new TipoMascotaDelegado(TipoMascotaPanel.this).consultarTipoMascotaVo(id);
@@ -196,16 +236,16 @@ public class TipoMascotaPanel extends javax.swing.JPanel {
                 tipoMascotaVo.setIdTipoMascota(tMvo.getIdTipoMascota());
                 tipoMascotaVo.setNombre(tMvo.getNombre());
                 tipoMascotaVo.setEstado(tMvo.isEstado());
+                llenarCampos();
             }
         }
     };
-    
-        private void llenarCampos(){
-            txtNombre.setText(tipoMascotaVo.getNombre());
-            cbxEstado.setSelected(tipoMascotaVo.isEstado());
-            
-                    
-        }
+
+    private void llenarCampos() {
+        txtNombre.setText(tipoMascotaVo.getNombre());
+        cbxEstado.setSelected(tipoMascotaVo.isEstado());
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
