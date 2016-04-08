@@ -6,10 +6,13 @@
 package co.edu.intecap.clinicaveterinaria.vista.paneles;
 
 import co.edu.intecap.clinicaveterinaria.control.ClienteDelegado;
+import co.edu.intecap.clinicaveterinaria.control.MascotaDelegado;
 import co.edu.intecap.clinicaveterinaria.control.TipoMascotaDelegado;
 import co.edu.intecap.clinicaveterinaria.modelo.vo.ClienteVo;
+import co.edu.intecap.clinicaveterinaria.modelo.vo.MascotaVo;
 import co.edu.intecap.clinicaveterinaria.modelo.vo.TipoMascotaVo;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -48,16 +51,49 @@ public class MascotaPanel extends javax.swing.JPanel {
         }
         for (ClienteVo clienteVo : listaClientes) {
             cboCliente.addItem(clienteVo.getNombre());
-            
+
         }
     }
-    private int obtenerIdTipoMascotaCombo(){
+
+    /**
+     * obtener del list de tipo de mascota el od del tipo de mascota
+     * seleccionado en el combo box
+     *
+     * @return int id del tipo de mascota seleccionado en el comboBox
+     */
+    private int obtenerIdTipoMascotaCombo() {
         int IdSeleccionado = cboTipoMascota.getSelectedIndex();
-        int IdTipoMascota = listaTipoMascota.get(IdSeleccionado -1).getIdTipoMascota();
+        int IdTipoMascota = listaTipoMascota.get(IdSeleccionado - 1).getIdTipoMascota();
         return IdTipoMascota;
     }
-            
+        /**
+         * obterner del list de clientes el id de cliente seleccionado en el combo box
+         * 
+         * @return int id del cliente seleccionado en el combobox
+         */
+    private int obtenerIdClienteCombo() {
+        int idSeleccionado = cboCliente.getSelectedIndex();
+        int idCliente = listaClientes.get(idSeleccionado - 1).getIdCliente();
+        return idCliente;
+    }
 
+    private void registrarMascota(){
+        MascotaVo mascotaVo = new MascotaVo();
+        //obtener el valor de txtNombre
+        mascotaVo.setNombre(txtNombre.getText());
+        //obtener el valor de txtEdad
+        mascotaVo.setEdad((int)txtEdad.getValue());
+        //obterne el valor del estado cbxEstado
+        mascotaVo.setEstado(cbxEstado.isSelected());
+        //obterne el id tipo de mascota del cboTipoMascota
+        mascotaVo.setIdTipoMascota(this.obtenerIdTipoMascotaCombo());
+        //obtener el id del cliente del cboCliente
+        mascotaVo.setIdCliente(this.obtenerIdClienteCombo());
+        new MascotaDelegado(this).insertarMascota(mascotaVo);
+        JOptionPane.showMessageDialog(this, "Mascota registrada correctamente","Registro de mascota",JOptionPane.INFORMATION_MESSAGE);
+        
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,6 +144,11 @@ public class MascotaPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblMascota);
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -176,6 +217,11 @@ public class MascotaPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        registrarMascota();
+        
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
